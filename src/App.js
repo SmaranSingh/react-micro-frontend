@@ -1,25 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+
+import Header from "./Header";
+import React from "react";
+import MicroFrontend from "./Microfrontend";
+import Home from "./Home";
+
+const {
+  REACT_APP_CHILD1_HOST: child1Host,
+  REACT_APP_CHILD2_HOST: child2Host,
+} = process.env;
+
+const Child1 = ({ history }) => <MicroFrontend history={history} host={child1Host} name='Child1' />;
+const Child2 = ({ history }) => (
+  <MicroFrontend history={history} host={child2Host} name='Child2' />
+);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Header />
+      <Switch>
+        <Route exact path='/' component={Home} />
+        <Route exact path='/child1' component={Child1} />
+        <Route exact path='/child2' component={Child2} />
+        <Redirect to='/' />
+      </Switch>
+    </BrowserRouter>
   );
 }
 
